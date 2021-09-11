@@ -13,7 +13,7 @@ public interface CategoriaRepresentation {
     @Data
     @Getter
     @Setter
-    class CreateCategoria {
+    class CriarCategoria {
 
         @NotNull(message = "O campo descrição não pode ser nulo")
         @Size(max = 30, min = 1, message = "A descrição deve conter de 1 a 30 caracteres")
@@ -24,13 +24,13 @@ public interface CategoriaRepresentation {
     @Getter
     @Setter
     @Builder
-    class Detail {
+    class Detalhe {
         private Long id;
         private String descricao;
         private Categoria.Status status;
 
-        public static Detail from(Categoria categoria) {
-            return Detail.builder()
+        public static Detalhe from(Categoria categoria) {
+            return Detalhe.builder()
                     .id(categoria.getId())
                     .descricao(categoria.getDescricao())
                     .status(categoria.getStatus())

@@ -19,10 +19,10 @@ public class CategoriaController {
 
     @PostMapping
     @RequestMapping("/")
-    public ResponseEntity<CategoriaRepresentation.Detail> createCategotia(
-           @Valid @RequestBody CategoriaRepresentation.CreateCategoria createCategoria) {
+    public ResponseEntity<CategoriaRepresentation.Detalhe> criarCategotia(
+           @Valid @RequestBody CategoriaRepresentation.CriarCategoria criarCategoria) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(CategoriaRepresentation.Detail.from(this.categoriaService.salvar(createCategoria)));
+                .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.salvarCategoria(criarCategoria)));
     }
 }

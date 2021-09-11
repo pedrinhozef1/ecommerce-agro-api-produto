@@ -18,7 +18,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "O campo descrição não pode ser nulo")
+    @NotNull(message = "A Descrição não pode ser nulo")
     @Column(name = "DESCRICAO")
     @Size(max = 30, min = 1, message = "A descrição deve conter de 1 a 30 caracteres")
     private String descricao;
