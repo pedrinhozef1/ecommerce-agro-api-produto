@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface CategoriaRepresentation {
 
@@ -35,6 +37,28 @@ public interface CategoriaRepresentation {
                     .descricao(categoria.getDescricao())
                     .status(categoria.getStatus())
                     .build();
+        }
+    }
+
+    @Data
+    @Getter
+    @Setter
+    @Builder
+    class Lista {
+        private Long id;
+        private String descricao;
+
+        private static Lista from(Categoria categoria){ // cria objeto tipo lista
+            return Lista.builder()
+                    .id(categoria.getId())
+                    .descricao(categoria.getDescricao())
+                    .build();
+        }
+
+        public static List<Lista> from(List<Categoria> categoria){ // recebe a lista de cima como parametro e retorna a lista
+            return categoria.stream()
+                    .map(Lista::from)
+                    .collect(Collectors.toList());
         }
     }
 }
