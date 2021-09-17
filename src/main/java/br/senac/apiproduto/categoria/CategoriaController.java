@@ -16,10 +16,9 @@ public class CategoriaController {
 
     private CategoriaService categoriaService;
 
-    // Definindo requisição do tipo POST
-    @PostMapping
-    // endpoint "/" para requisicao POST
-    @RequestMapping("/")
+    // mapeando uma requisição do tipo POST com o caminho /
+    @PostMapping("/")
+
     // metodo para criar categoria
     // @valid - validar os @notnull @notempty definidos na classe
     public ResponseEntity<CategoriaRepresentation.Detalhe> criarCategotia(
@@ -28,9 +27,9 @@ public class CategoriaController {
                 .status(HttpStatus.CREATED)
                 .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.salvarCategoria(criarCategoria)));
     }
+    // mapeando uma requisição do tipo GET com o caminho /
+    @GetMapping("/")
 
-    @GetMapping // mapeado como uma requisição GET
-    @RequestMapping("/todos") // endpoint /todos na URI
     public ResponseEntity<List<CategoriaRepresentation.Lista>> getAll(){
         // Filtro para trazer apenas a categoria com STATUS ATIVO
         // Como se fosse - where status = "ativo"
@@ -40,10 +39,8 @@ public class CategoriaController {
                 .from(this.categoriaService.getAllCategoria(filtro)));
     }
 
-    // requisição do tipo delete
-    @DeleteMapping
-    // caminho da requisição Delete
-    @RequestMapping("/{id}")
+    // mapeando uma requisição do tipo DELETE recebendo um ID como parametro
+    @DeleteMapping("{id}")
 
     // metodo para deletar uma categoria passada o id por parametro
     public ResponseEntity deletaCategoria(@PathVariable("id") Long id){
