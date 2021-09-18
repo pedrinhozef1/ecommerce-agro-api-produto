@@ -1,6 +1,8 @@
 package br.senac.apiproduto.categoria;
 
+import br.senac.apiproduto.exceptions.NotFoundException;
 import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,13 +26,23 @@ public class CategoriaService {
     }
 
     public void deletaCategoria(Long id) {
-        // buscando a categoria pelo ID no parametro
-        Categoria categoria = this.categoriaRepository.findById(id).get();
+        // chama o metodo getCategoria que possui vai fazer o "select" com os filtros
+        Categoria categoria = this.getCategoria(id);
 
         // seta status para inativo
         categoria.setStatus(Categoria.Status.INATIVO);
 
         // salva o objeto com o status alterado para inativo
         this.categoriaRepository.save(categoria);
+    }
+    // metodo para trazer a categoria pelo id no parametro
+    public Categoria getCategoria(Long id){ // id informado na URI
+        BooleanExpression filtro = // where id = (id) and status = "ativo"
+                QCategoria.categoria.id.eq(id) // traz categoria com o ID que veio por parametro
+                        .and(QCategoria.categoria.status.eq(Categoria.Status.ATIVO)); // e com o  Status "Ativo"
+
+        return this.categoriaRepository.findOne(filtro)
+                // se nao, dispara um erro
+                .orElseThrow(() -> new NotFoundException("Categoria não encontrada."));
     }
 }

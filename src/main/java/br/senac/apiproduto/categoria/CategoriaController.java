@@ -27,6 +27,9 @@ public class CategoriaController {
                 .status(HttpStatus.CREATED)
                 .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.salvarCategoria(criarCategoria)));
     }
+
+
+
     // mapeando uma requisição do tipo GET com o caminho /
     @GetMapping("/")
 
@@ -37,6 +40,11 @@ public class CategoriaController {
 
         return ResponseEntity.ok(CategoriaRepresentation.Lista
                 .from(this.categoriaService.getAllCategoria(filtro)));
+    }
+    // mapeando requisição GET passando ID por variavel
+    @GetMapping("/{id}")
+    public ResponseEntity<CategoriaRepresentation.Detalhe> getCategoriaId(@PathVariable("id") Long id){
+        return ResponseEntity.ok(CategoriaRepresentation.Detalhe.from(this.categoriaService.getCategoria(id)));
     }
 
     // mapeando uma requisição do tipo DELETE recebendo um ID como parametro
@@ -49,4 +57,5 @@ public class CategoriaController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
+
 }
