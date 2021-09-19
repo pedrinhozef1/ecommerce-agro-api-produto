@@ -13,10 +13,10 @@ import java.util.List;
 public class CategoriaService {
     private CategoriaRepository categoriaRepository;
 
-    public Categoria salvarCategoria(CategoriaRepresentation.CriarCategoria criarCategoria) {
+    public Categoria salvarCategoria(CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria) {
 
         return this.categoriaRepository.save(Categoria.builder()
-                .descricao(criarCategoria.getDescricao())
+                .descricao(criarOuAtualizarCategoria.getDescricao())
                 .status(Categoria.Status.ATIVO)
                 .build());
     }
@@ -44,5 +44,11 @@ public class CategoriaService {
         return this.categoriaRepository.findOne(filtro)
                 // se nao, dispara um erro
                 .orElseThrow(() -> new NotFoundException("Categoria não encontrada."));
+    }
+
+    public Categoria atualizar(Long id, CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria) {
+        Categoria categoria = this.getCategoria(id);
+        categoria.setDescricao(criarOuAtualizarCategoria.getDescricao());
+        return this.categoriaRepository.save(categoria);
     }
 }

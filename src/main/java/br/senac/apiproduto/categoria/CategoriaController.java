@@ -22,13 +22,20 @@ public class CategoriaController {
     // metodo para criar categoria
     // @valid - validar os @notnull @notempty definidos na classe
     public ResponseEntity<CategoriaRepresentation.Detalhe> criarCategotia(
-           @Valid @RequestBody CategoriaRepresentation.CriarCategoria criarCategoria) {
+           @Valid @RequestBody CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria) {
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.salvarCategoria(criarCategoria)));
+                .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.salvarCategoria(criarOuAtualizarCategoria)));
     }
 
-
+    // mapeando requisição do tipo PUT (UPDATE) passando um ID
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoriaRepresentation.Detalhe> atualizaCategoria(@PathVariable("id") Long id,
+           @Valid @RequestBody CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(CategoriaRepresentation.Detalhe.from(this.categoriaService.atualizar(id, criarOuAtualizarCategoria)));
+    }
 
     // mapeando uma requisição do tipo GET com o caminho /
     @GetMapping("/")
