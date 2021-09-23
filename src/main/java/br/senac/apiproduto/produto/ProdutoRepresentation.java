@@ -1,12 +1,11 @@
 package br.senac.apiproduto.produto;
 
-import br.senac.apiproduto.categoria.Categoria;
+import br.senac.apiproduto.categoria.CategoriaRepresentation;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -28,15 +27,12 @@ public interface ProdutoRepresentation {
         private String complemento;
 
         @NotNull(message = "O valor do produto não pode ser nulo")
-        @NotEmpty
         private Double valor;
 
         @NotNull(message = "A unidade de medida do produto não pode ser nula")
-        @NotEmpty
         private Produto.UnidadeMedida unidadeMedida;
 
         @NotNull(message = "A quantidade do produto não pode ser nula")
-        @NotEmpty(message = "A quantidade do produto não pode ser vazia")
         private Double quantidade;
 
         @NotNull(message = "O fabricante do produto não pode ser nula")
@@ -45,14 +41,10 @@ public interface ProdutoRepresentation {
 
         private String fornecedor;
 
-        @NotNull(message = "O status não pode ser nulo")
-        @NotEmpty(message = "O status não pode ser vazio")
-        private Produto.Status status;
-
         @NotNull(message = "A categoria é obrigatória")
         private Long categoria;
 
-        public enum UnidadeMedida{
+        public enum UnidadeMedida {
             UN,
             KG,
             ML,
@@ -64,4 +56,42 @@ public interface ProdutoRepresentation {
         }
     }
 
+    @Data
+    @Getter
+    @Setter
+    @Builder
+    class DetalhesProduto {
+        private Long id;
+        private String nome;
+        private String descricao;
+        private String complemento;
+        private Double valor;
+        private Produto.UnidadeMedida unidadeMedida;
+        private Double quantidade;
+        private String fabricante;
+        private String fornecedor;
+        private Produto.Status status;
+        private CategoriaRepresentation.DetalheCategoria categoria;
+
+        // recebe um objeto Produto como parametro
+        public static DetalhesProduto from(Produto produto){
+            return DetalhesProduto.builder()
+                    .id(produto.getId())
+                    .nome(produto.getNome())
+                    .descricao(produto.getDescricao())
+                    .complemento(produto.getComplemento())
+                    .valor(produto.getValor())
+                    .unidadeMedida(produto.getUnidadeMedida())
+                    .quantidade(produto.getQuantidade())
+                    .fabricante(produto.getFabricante())
+                    .fornecedor(produto.getFornecedor())
+                    .status(produto.getStatus())
+                    .categoria(CategoriaRepresentation.DetalheCategoria.from(produto.getCategoria()))
+                    .build();
+        }
+    }
+
+    class ListaDeProduto{
+
+    }
 }

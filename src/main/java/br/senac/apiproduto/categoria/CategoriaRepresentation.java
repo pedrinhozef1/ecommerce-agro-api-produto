@@ -26,13 +26,13 @@ public interface CategoriaRepresentation {
     @Getter
     @Setter
     @Builder
-    class Detalhe {
+    class DetalheCategoria {
         private Long id;
         private String descricao;
         private Categoria.Status status;
 
-        public static Detalhe from(Categoria categoria) {
-            return Detalhe.builder()
+        public static DetalheCategoria from(Categoria categoria) {
+            return DetalheCategoria.builder()
                     .id(categoria.getId())
                     .descricao(categoria.getDescricao())
                     .status(categoria.getStatus())
@@ -48,14 +48,15 @@ public interface CategoriaRepresentation {
         private Long id;
         private String descricao;
 
-        private static Lista from(Categoria categoria){ // cria objeto tipo lista
+        // cria um objeto do tipo lista
+        private static Lista from(Categoria categoria){
             return Lista.builder()
                     .id(categoria.getId())
                     .descricao(categoria.getDescricao())
                     .build();
         }
-
-        public static List<Lista> from(List<Categoria> categoria){ // recebe a lista de cima como parametro e retorna a lista
+        // recebe a lista de cima como parametro e retorna a lista
+        public static List<Lista> from(List<Categoria> categoria){
             return categoria.stream()
                     .map(Lista::from)
                     .collect(Collectors.toList());

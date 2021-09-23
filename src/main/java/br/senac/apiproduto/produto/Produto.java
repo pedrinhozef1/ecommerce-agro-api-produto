@@ -35,17 +35,14 @@ public class Produto {
     private String complemento;
 
     @NotNull(message = "O valor do produto não pode ser nulo")
-    @NotEmpty
     @Column(name = "vl_produto")
     private Double valor;
 
     @NotNull(message = "A unidade de medida do produto não pode ser nula")
-    @NotEmpty
     @Column(name = "unidadeMedida")
     private UnidadeMedida unidadeMedida;
 
     @NotNull(message = "A quantidade do produto não pode ser nula")
-    @NotEmpty(message = "A quantidade do produto não pode ser vazia")
     @Column(name = "qt_produto")
     private Double quantidade;
 
@@ -58,7 +55,6 @@ public class Produto {
     private String fornecedor;
 
     @NotNull(message = "O status não pode ser nulo")
-    @NotEmpty(message = "O status não pode ser vazio")
     @Column(name = "id_status")
     private Status status;
 
