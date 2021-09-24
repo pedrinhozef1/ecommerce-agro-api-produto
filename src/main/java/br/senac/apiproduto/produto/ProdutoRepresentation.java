@@ -9,6 +9,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public interface ProdutoRepresentation {
     @Data
@@ -91,7 +93,47 @@ public interface ProdutoRepresentation {
         }
     }
 
+    @Data
+    @Setter
+    @Getter
+    @Builder
     class ListaDeProduto{
+        private Long id;
+        private String nome;
+        private String descricao;
+        private String complemento;
+        private Double valor;
+        private Produto.UnidadeMedida unidadeMedida;
+        private Double quantidade;
+        private String fabricante;
+        private String fornecedor;
+        private Produto.Status status;
+        private CategoriaRepresentation.DetalheCategoria categoria;
 
+        private static ListaDeProduto from(Produto produto){
+            return ListaDeProduto.builder()
+                    .id(produto.getId())
+                    .nome(produto.getNome())
+                    .descricao(produto.getDescricao())
+                    .complemento(produto.getComplemento())
+                    .valor(produto.getValor())
+                    .unidadeMedida(produto.getUnidadeMedida())
+                    .quantidade(produto.getQuantidade())
+                    .fabricante(produto.getFabricante())
+                    .fornecedor(produto.getFornecedor())
+                    // busca a categoria do produto
+                    .categoria(CategoriaRepresentation.DetalheCategoria.from(produto.getCategoria()))
+                    .build();
+        }
+
+        // recebe a lista de cima como parametro
+        public static List<ListaDeProduto> from(List<Produto> produto){
+            return produto.stream()
+                    // .map -similar a um for ou for each, percorre os itens de uma determinada lista
+                    //       Nesse caso, percorre os itens da ListaDeProduto criada em cima
+                    //.collect - Pega todos os itens e transforma em uma lista para mostrar na tela
+                    .map(ListaDeProduto::from)
+                    .collect(Collectors.toList());
+        }
     }
 }
