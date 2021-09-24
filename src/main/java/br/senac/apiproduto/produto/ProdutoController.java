@@ -19,7 +19,7 @@ public class ProdutoController {
     private final ProdutoService produtoService;
     private final CategoriaService categoriaService;
 
-    @PostMapping("/criar-produto")
+    @PostMapping("/criar")
     public ResponseEntity<ProdutoRepresentation.DetalhesProduto> cadastrarProduto(
             @Valid @RequestBody ProdutoRepresentation.CriarOuAtualizar criarOuAtualizar){
 
@@ -29,14 +29,40 @@ public class ProdutoController {
                 .body(ProdutoRepresentation.DetalhesProduto.from(
                         this.produtoService.salvarProduto(criarOuAtualizar, categoria)));
     }
-
-   @GetMapping("/todos-produtos")
-    public ResponseEntity<List<ProdutoRepresentation.ListaDeProduto>> todosProdutos(){
+    // traz todos produtos
+   @GetMapping("/todos")
+    public ResponseEntity<List<ProdutoRepresentation.ListaDeProduto>> buscarTodosProdutos(){
+        // fltro para buscar todos produtos que estejam com status ATIVO
        BooleanExpression filtro = QProduto.produto.status.eq(Produto.Status.ATIVO);
 
        return ResponseEntity.ok(ProdutoRepresentation.ListaDeProduto.from(
+               // chama o metodo buscarTodosProdutos do service passando o FILTRO como parametro
                this.produtoService.buscarTodosProdutos(filtro)));
     }
+    // traz um produto buscando pelo id que vem na URI
+    @GetMapping("/um-produto/{id}")
+    public ResponseEntity<ProdutoRepresentation.DetalhesProduto> buscarUmProduto(@PathVariable("id") Long id){
+        return ResponseEntity.ok(ProdutoRepresentation.DetalhesProduto.from(
+                this.produtoService.buscarUmProduto(id)));
+    }
 
+    @PutMapping("/atualizar/{id}")
+    public ResponseEntity<ProdutoRepresentation.DetalhesProduto> atualizarProduto(@PathVariable("id") Long id,
+        @Valid @RequestBody ProdutoRepresentation.CriarOuAtualizar criarOuAtualizar){
 
+        Categoria categoria = this.categoriaService.getCategoria(criarOuAtualizar.getCategoria());
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ProdutoRepresentation.DetalhesProduto.from(
+                        this.produtoService.atualizarProduto(id, criarOuAtualizar, categoria)));
+
+    }
+
+    @DeleteMapping("/apagar/{id}")
+    public ResponseEntity apagarProduto(@PathVariable("id") Long id){
+        this.produtoService.deletarProduto(id);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT)
+                .build();
+    }
 }

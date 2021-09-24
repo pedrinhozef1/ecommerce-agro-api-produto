@@ -31,10 +31,11 @@ public class CategoriaController {
     // mapeando requisição do tipo PUT (UPDATE) passando um ID
     @PutMapping("/{id}")
     public ResponseEntity<CategoriaRepresentation.DetalheCategoria> atualizaCategoria(@PathVariable("id") Long id,
-                                                                                      @Valid @RequestBody CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria){
+                @Valid @RequestBody CategoriaRepresentation.CriarOuAtualizarCategoria criarOuAtualizarCategoria){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(CategoriaRepresentation.DetalheCategoria.from(this.categoriaService.atualizar(id, criarOuAtualizarCategoria)));
+                .body(CategoriaRepresentation.DetalheCategoria.from(
+                        this.categoriaService.atualizar(id, criarOuAtualizarCategoria)));
     }
 
     // mapeando uma requisição do tipo GET com o caminho /
@@ -51,12 +52,12 @@ public class CategoriaController {
     // mapeando requisição GET passando ID por variavel
     @GetMapping("/{id}")
     public ResponseEntity<CategoriaRepresentation.DetalheCategoria> getCategoriaId(@PathVariable("id") Long id){
-        return ResponseEntity.ok(CategoriaRepresentation.DetalheCategoria.from(this.categoriaService.getCategoria(id)));
+        return ResponseEntity.ok(CategoriaRepresentation.DetalheCategoria.from(
+                this.categoriaService.getCategoria(id)));
     }
 
     // mapeando uma requisição do tipo DELETE recebendo um ID como parametro
     @DeleteMapping("{id}")
-
     // metodo para deletar uma categoria passada o id por parametro
     public ResponseEntity deletaCategoria(@PathVariable("id") Long id){
 

@@ -34,25 +34,26 @@ public class ProdutoService {
         return this.produtoRepository.save(produto);
     }
 
-//    public Produto atualizarProduto(Long id, ProdutoRepresentation.CriarOuAtualizar criarOuAtualizar){
-//        Produto produtoAntigo = this.buscarUmProduto(id);
-//        Categoria categoria = this.categoriaService.getCategoria(criarOuAtualizar.getCategoria());
-//        //toBuilder carrega o produto que ja existe no banco, sobrescrevendo e atualizando os campos que foram alterados
-//        Produto produtoAtualizado = produtoAntigo.toBuilder()
-//                .nome(criarOuAtualizar.getNome())
-//                .descricao(criarOuAtualizar.getDescricao())
-//                .complemento(Strings.isEmpty(criarOuAtualizar.getComplemento()) ? "" : criarOuAtualizar.getComplemento())
-//                .fabricante(criarOuAtualizar.getFabricante())
-//                .fornecedor(Strings.isEmpty(criarOuAtualizar.getFornecedor()) ? "" : criarOuAtualizar.getFornecedor())
-//                .quantidade(criarOuAtualizar.getQuantidade())
-//                .valor(criarOuAtualizar.getValor())
-//                .unidadeMedida(criarOuAtualizar.getUnidadeMedida())
-//                .categoria(categoria)
-//                .status(Produto.Status.ATIVO)
-//                .build();
-//
-//        return this.produtoRepository.save(produtoAtualizado);
-//    }
+    public Produto atualizarProduto(Long id, ProdutoRepresentation.CriarOuAtualizar criarOuAtualizar,
+                                    Categoria categoria){
+        Produto produtoAntigo = this.buscarUmProduto(id);
+
+        //toBuilder carrega o produto que ja existe no banco, sobrescrevendo e atualizando os campos que foram alterados
+        Produto produtoAtualizado = produtoAntigo.toBuilder()
+                .nome(criarOuAtualizar.getNome())
+                .descricao(criarOuAtualizar.getDescricao())
+                .complemento(Strings.isEmpty(criarOuAtualizar.getComplemento()) ? "" : criarOuAtualizar.getComplemento())
+                .fabricante(criarOuAtualizar.getFabricante())
+                .fornecedor(Strings.isEmpty(criarOuAtualizar.getFornecedor()) ? "" : criarOuAtualizar.getFornecedor())
+                .quantidade(criarOuAtualizar.getQuantidade())
+                .valor(criarOuAtualizar.getValor())
+                .unidadeMedida(criarOuAtualizar.getUnidadeMedida())
+                .categoria(categoria)
+                .status(Produto.Status.ATIVO)
+                .build();
+
+        return this.produtoRepository.save(produtoAtualizado);
+    }
 
     public List<Produto> buscarTodosProdutos(Predicate filtro){
         return this.produtoRepository.findAll(filtro);
@@ -66,8 +67,11 @@ public class ProdutoService {
     }
 
     public void deletarProduto(Long id){
+        // chama o metodo buscarUmProduto pra ver se existe um produto com o id informado
         Produto produto = this.buscarUmProduto(id);
+        // seta o STATUS desse produto pra INATIVO
         produto.setStatus(Produto.Status.INATIVO);
+        // salva o objetivo PRODUTO com o status atualizado
         this.produtoRepository.save(produto);
     }
 }
