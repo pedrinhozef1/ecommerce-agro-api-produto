@@ -62,7 +62,7 @@ public class ProdutoService {
     public Produto buscarUmProduto(Long id){
         BooleanExpression filtro = QProduto.produto.id.eq(id)
                 .and(QProduto.produto.status.eq(Produto.Status.ATIVO));
-        return this.produtoRepository.findById(id)
+        return this.produtoRepository.findOne(filtro)
                 .orElseThrow(()-> new NotFoundException("Produto não encontrado."));
     }
 
